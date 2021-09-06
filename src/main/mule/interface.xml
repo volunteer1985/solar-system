@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<mule xmlns="http://www.mulesoft.org/schema/mule/core" xmlns:apikit="http://www.mulesoft.org/schema/mule/mule-apikit" xmlns:doc="http://www.mulesoft.org/schema/mule/documentation" xmlns:http="http://www.mulesoft.org/schema/mule/http" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.mulesoft.org/schema/mule/core http://www.mulesoft.org/schema/mule/core/current/mule.xsd http://www.mulesoft.org/schema/mule/http http://www.mulesoft.org/schema/mule/http/current/mule-http.xsd http://www.mulesoft.org/schema/mule/mule-apikit http://www.mulesoft.org/schema/mule/mule-apikit/current/mule-apikit.xsd ">
+    <flow name="solarsystemapi-main">
+        <http:listener config-ref="HTTP_Listener_config" path="/api/*">
+            <http:response statusCode="#[vars.httpStatus default 200]">
+                <http:headers>#[vars.outboundHeaders default {}]</http:headers>
+            </http:response>
+            <http:error-response statusCode="#[vars.httpStatus default 500]">
+                <http:body>#[payload]</http:body>
+                <http:headers>#[vars.outboundHeaders default {}]</http:headers>
+            </http:error-response>
+        </http:listener>
+        <apikit:router config-ref="solarsystemapi-config" />
+		<error-handler ref="apiMainErrorHandler" />
+    </flow>
+    <flow name="solarsystemapi-console">
+        <http:listener config-ref="HTTP_Listener_config" path="/console/*">
+            <http:response statusCode="#[vars.httpStatus default 200]">
+                <http:headers>#[vars.outboundHeaders default {}]</http:headers>
+            </http:response>
+            <http:error-response statusCode="#[vars.httpStatus default 500]">
+                <http:body>#[payload]</http:body>
+                <http:headers>#[vars.outboundHeaders default {}]</http:headers>
+            </http:error-response>
+        </http:listener>
+        <apikit:console config-ref="solarsystemapi-config" />
+		<error-handler ref="apiConsoleErrorHandler" />
+    </flow>
+    <flow name="get:\moons:solarsystemapi-config">
+        <flow-ref doc:name="getMoonByName" doc:id="5d9f39fd-bdd3-4371-adbf-ba8f306c7c47" name="getMoonByName" />
+    </flow>
+    <flow name="get:\planets:solarsystemapi-config">
+        <flow-ref doc:name="getPlanetsFlow" doc:id="3319f1f4-11a4-493f-897b-35109e40bd05" name="getPlanetsFlow" />
+    </flow>
+    <flow name="get:\moons\(planetName):solarsystemapi-config">
+        <flow-ref doc:name="getMoonsByPlanetName" doc:id="46128a5c-b4d9-4f02-ab35-3d45601d275b" name="getMoonsByPlanetName" />
+    </flow>
+</mule>

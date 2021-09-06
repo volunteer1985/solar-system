@@ -1,0 +1,45 @@
+ [
+    
+    {
+      
+      "name": "136199 Eris",
+      "isPlanet": true,
+      "moons": [
+        {
+          "moon": "Dysnomie"
+          
+        }
+      ],
+      "semimajorAxis": 10180122852,
+      "perihelion": 5765732799,
+      "aphelion": 14594512904,
+      "eccentricity": 0.44068,
+      "inclination": 44.0445,
+      "mass": {
+        "massValue": 1.66,
+        "massExponent": 22
+      },
+      
+      "density": 2.52,
+      "gravity": 0.82,
+      "escape": 1380,
+      "meanRadius": 1163,
+      "equaRadius": 0,
+      "polarRadius": 0,
+      "flattening": 0,
+      "dimension": "",
+      "sideralOrbit": 203830,
+      "sideralRotation": 25.92,
+      "aroundPlanet": null,
+      "discoveredBy": "Michael E. Brown, Chadwick Trujillo, David L. Rabinowitz",
+      "discoveryDate": "05/01/2005",
+      "alternativeName": "2003 UB313",
+      "axialTilt": 0,
+      "avgTemp": 0,
+      "mainAnomaly": 205.989,
+      "argPeriapsis": 151.639,
+      "longAscNode": 35.951,
+      "rel": "https://api.le-systeme-solaire.net/rest/bodies/eris"
+    }    
+  ]
+    
