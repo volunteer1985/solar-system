@@ -1,0 +1,34 @@
+%dw 2.0
+
+type auto_c5a74d0a_ff54_43e7_96cc_1ebdd804a8de_Input_Payload = Array<{|  name: String,   isPlanet: Boolean,   moons: Array<{| moon: String |}>, 
+  semimajorAxis: Number {"typeId": "double"}, 
+  perihelion: Number {"typeId": "double"}, 
+  aphelion: Number {"typeId": "double"}, 
+  eccentricity: Number {"typeId": "double"}, 
+  inclination: Number {"typeId": "double"}, 
+  mass: {|
+    massValue: Number {"typeId": "double"}, 
+    massExponent: Number {"typeId": "int"}
+  |}, 
+  density: Number {"typeId": "double"}, 
+  gravity: Number {"typeId": "double"}, 
+  escape: Number {"typeId": "int"}, 
+  meanRadius: Number {"typeId": "int"}, 
+  equaRadius: Number {"typeId": "int"}, 
+  polarRadius: Number {"typeId": "int"}, 
+  flattening: Number {"typeId": "int"}, 
+  dimension: String, 
+  sideralOrbit: Number {"typeId": "int"}, 
+  sideralRotation: Number {"typeId": "double"}, 
+  aroundPlanet: Null, 
+  discoveredBy: String, 
+  discoveryDate: String, 
+  alternativeName: String, 
+  axialTilt: Number {"typeId": "int"}, 
+  avgTemp: Number {"typeId": "int"}, 
+  mainAnomaly: Number {"typeId": "double"}, 
+  argPeriapsis: Number {"typeId": "double"}, 
+  longAscNode: Number {"typeId": "double"}, 
+  rel: String
+|}>
+

@@ -1,0 +1,4 @@
+%dw 2.0
+
+type auto_43d12dfd_ea3f_4a2c_9a00_24f6b62d8326_Output_Variables_name = String | Null
+

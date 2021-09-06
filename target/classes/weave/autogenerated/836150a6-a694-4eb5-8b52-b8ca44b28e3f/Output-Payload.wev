@@ -1,0 +1,4 @@
+%dw 2.0
+
+type auto_836150a6_a694_4eb5_8b52_b8ca44b28e3f_Output_Payload = Array<{  meanRadius: Number,   mass: {    massExponent: Number,     massValue: Number,     _?: Any  },   argPeriapsis: Number,   discoveredBy: String,   isPlanet: Boolean,   perihelion: Number,   mainAnomaly: Number,   aphelion: Number,   sideralRotation: Number,   axialTilt: Number,   aroundPlanet: String,   alternativeName: String,   escape: Number,   dimension: Number,   inclination: Number,   polarRadius: Number,   sideralOrbit: Number,   density: Number,   flattening: Number,   eccentricity: Number,   longAscNode: Number,   equaRadius: Number,   avgTemp: Number,   discoveryDate: String,   gravity: Number,   name: String,   _?: Any}>
+

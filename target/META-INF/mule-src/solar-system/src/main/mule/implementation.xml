@@ -1,0 +1,184 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<mule xmlns:validation="http://www.mulesoft.org/schema/mule/validation" xmlns:ee="http://www.mulesoft.org/schema/mule/ee/core"
+	xmlns:http="http://www.mulesoft.org/schema/mule/http"
+	xmlns="http://www.mulesoft.org/schema/mule/core" xmlns:doc="http://www.mulesoft.org/schema/mule/documentation" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.mulesoft.org/schema/mule/core http://www.mulesoft.org/schema/mule/core/current/mule.xsd
+http://www.mulesoft.org/schema/mule/http http://www.mulesoft.org/schema/mule/http/current/mule-http.xsd
+http://www.mulesoft.org/schema/mule/ee/core http://www.mulesoft.org/schema/mule/ee/core/current/mule-ee.xsd
+http://www.mulesoft.org/schema/mule/validation http://www.mulesoft.org/schema/mule/validation/current/mule-validation.xsd">
+	
+	<sub-flow name="startLoggerInfo" doc:id="ab2ffd81-f7ec-4fef-8ad2-57ec3b3a1256" >
+		<logger level="INFO" doc:name="Start Logger Message" doc:id="a020fcfd-a3db-44c1-9ed0-bb1dbb1725ec" />
+	</sub-flow>
+	<sub-flow name="finishLoggerInfo" doc:id="c5a74d0a-ff54-43e7-96cc-1ebdd804a8de">
+		<logger level="INFO" doc:name="Last Log" doc:id="ddab6aa6-08e9-40af-8375-56cfac4473d1" />
+	</sub-flow>
+	<sub-flow name="gerToSourceAndPrimaryTransformation" doc:id="8a41f6f1-2d93-4979-b9bd-e0a5964b89f2" >
+		<http:request method="GET" doc:name="GETtoSource" doc:id="3219c906-c6ea-4894-a372-fba25bd0dc4d" outputMimeType="application/json" config-ref="HTTP_Request_configuration" path="/">
+		</http:request>
+		<choice doc:name="Choice" doc:id="d5383275-dea6-4043-88bb-59c24019b890" >
+			<when expression="#[vars.isMoon == true]">
+				<ee:transform doc:name="primaryPayloadTranformationMoon" doc:id="81212640-ec0c-43e0-855a-14ff2cd7f612" >
+					<ee:message >
+						<ee:set-payload ><![CDATA[%dw 2.0
+output application/json
+---
+payload.bodies map ( body , indexOfBody ) -> {
+	name: body.englishName,
+	semimajorAxis: body.semimajorAxis,
+	perihelion: body.perihelion,
+	aphelion: body.aphelion,
+	eccentricity: body.eccentricity,
+	inclination: body.inclination,
+	mass: {
+		massValue: body.mass.massValue,
+		massExponent: body.mass.massExponent
+	},
+	density: body.density,
+	gravity: body.gravity,
+	escape: body.escape,
+	meanRadius: body.meanRadius,
+	equaRadius: body.equaRadius,
+	polarRadius: body.polarRadius,
+	flattening: body.flattening,
+	dimension: body.dimension,
+	sideralOrbit: body.sideralOrbit,
+	sideralRotation: body.sideralRotation,
+	aroundPlanet: body.aroundPlanet.planet,
+	discoveredBy: body.discoveredBy,
+	discoveryDate: body.discoveryDate,
+	alternativeName: body.alternativeName,
+	axialTilt: body.axialTilt,
+	avgTemp: body.avgTemp,
+	mainAnomaly: body.mainAnomaly,
+	argPeriapsis: body.argPeriapsis,
+	longAscNode: body.longAscNode
+}]]></ee:set-payload>
+					</ee:message>
+				</ee:transform>
+			</when>
+			<otherwise >
+				<ee:transform doc:name="primaryPayloadTranformationPlanet" doc:id="12cafe28-8b49-4869-9b30-7c8ba43671a6">
+			<ee:message>
+				<ee:set-payload><![CDATA[%dw 2.0
+output application/json
+---
+payload.bodies map ( body , indexOfBody ) -> {
+	name: body.englishName,
+	isPlanet: body.isPlanet,
+	moons: body.moons map ( moon , indexOfMoon ) -> {
+		moon: moon.moon
+	},
+	semimajorAxis: body.semimajorAxis,
+	perihelion: body.perihelion,
+	aphelion: body.aphelion,
+	eccentricity: body.eccentricity,
+	inclination: body.inclination,
+	mass: {
+		massValue: body.mass.massValue,
+		massExponent: body.mass.massExponent
+	},
+	density: body.density,
+	gravity: body.gravity,
+	escape: body.escape,
+	meanRadius: body.meanRadius,
+	equaRadius: body.equaRadius,
+	polarRadius: body.polarRadius,
+	flattening: body.flattening,
+	dimension: body.dimension,
+	sideralOrbit: body.sideralOrbit,
+	sideralRotation: body.sideralRotation,
+	discoveredBy: body.discoveredBy,
+	discoveryDate: body.discoveryDate,
+	alternativeName: body.alternativeName,
+	axialTilt: body.axialTilt,
+	avgTemp: body.avgTemp,
+	mainAnomaly: body.mainAnomaly,
+	argPeriapsis: body.argPeriapsis,
+	longAscNode: body.longAscNode
+}]]></ee:set-payload>
+			</ee:message>
+		</ee:transform>
+			</otherwise>
+		</choice>
+	</sub-flow>
+	<flow name="getPlanetsFlow" doc:id="ffa464fa-4270-4413-96cd-f9e809d44499" >
+		<flow-ref doc:name="StartLoggerMessage" doc:id="ac70133e-2210-4c48-b48a-8cfc1c2de85c" name="startLoggerInfo"/>
+		<set-variable value='#[attributes.queryParams.name default ""]' doc:name="name" doc:id="5a375118-0a43-485f-9bca-3fafd46cecbd" variableName="name" />
+		<validation:is-true doc:name="Is true" doc:id="b6cfdba5-c266-4673-a28a-ea71c6ddde07" config-ref="Validation_Config" expression="#[['136199 Eris', '1 Ceres', '136472 Makemake', '136108 Haumea', 'Mercury', 'Venus', 'Earth', 'Mars', 'Jupiter', 'Saturn', 'Uranus', 'Neptune', 'Pluto', ''] contains vars.name]">
+			<error-mapping sourceType="VALIDATION:INVALID_BOOLEAN" targetType="APP:INCORRECT_PLANET" />
+		</validation:is-true>
+		<flow-ref doc:name="gerToSourceAndPrimaryTransformation" doc:id="62564397-e874-4e1c-b117-0641396e462b" name="gerToSourceAndPrimaryTransformation"/>
+		<ee:transform doc:name="filter by isPlanet" doc:id="d3a68338-1218-47c8-a03b-c903a9a38b9b">
+					<ee:message>
+						<ee:set-payload><![CDATA[%dw 2.0
+output application/json
+---
+payload filter((item, index) -> item.isPlanet == true)]]></ee:set-payload>
+					</ee:message>
+				</ee:transform>
+		<choice doc:name="Choice" doc:id="b58bf738-e9c4-4378-a3eb-5d81aaa84ac6" >
+			<when expression='#[vars.name != ""]'>
+				<ee:transform doc:name="filterByName" doc:id="0ece44ea-0abd-4052-81a2-8dfbdd76523b">
+					<ee:message>
+						<ee:set-payload><![CDATA[%dw 2.0
+output application/json
+---
+payload filter((item, index) -> item.name == vars.name)]]></ee:set-payload>
+					</ee:message>
+				</ee:transform>
+			</when>
+			<otherwise >
+				<logger level="INFO" doc:name="logPayload" doc:id="d4335c55-8193-41af-bbd5-17cc4a570a6c" message="#[payload]"/>
+			</otherwise>
+		</choice>
+		<flow-ref doc:name="finishLoggerInfo" doc:id="204962a2-d710-492e-90f1-11ff33950ec4" name="finishLoggerInfo"/>
+		<error-handler ref="getPlanetsErrorHandler" />
+	</flow>
+	<flow name="getMoonByName" doc:id="43d12dfd-ea3f-4a2c-9a00-24f6b62d8326" >
+		<flow-ref doc:name="startLoggerInfo" doc:id="78ac09f2-493d-4f6e-90e2-5f84586ac1ba" name="startLoggerInfo"/>
+		<set-variable value="#[attributes.queryParams.name]" doc:name="name" doc:id="55bc4d09-9134-4d04-b1ae-b8e2858f8cb6" variableName="name"/>
+		<validation:is-not-null doc:name="Is not null" doc:id="b05c7e32-790e-4e3e-9a50-072e14c26596" config-ref="Validation_Config" value="#[vars.name]"/>
+		<set-variable value="#[true]" doc:name="isMoon" doc:id="ca72c7d5-de1e-440e-b339-d4b71f5633e4" variableName="isMoon"/>
+		<flow-ref doc:name="gerToSourceAndPrimaryTransformation" doc:id="0ab02e3e-eb38-448b-8a22-33194c6eef04" name="gerToSourceAndPrimaryTransformation"/>
+		<ee:transform doc:name="filterMoons" doc:id="c905427c-2230-4776-b313-a7f255227e08" >
+			<ee:message >
+				<ee:set-payload ><![CDATA[%dw 2.0
+output application/json
+---
+payload filter((item, index) -> item.aroundPlanet != null)]]></ee:set-payload>
+			</ee:message>
+		</ee:transform>
+		<ee:transform doc:name="filterByMoonNameOrAlternativeName" doc:id="dc30003d-d54f-4036-bdc1-ad43d78e3907">
+					<ee:message>
+						<ee:set-payload><![CDATA[%dw 2.0
+output application/json
+---
+payload filter((item, index) -> item.name == vars.name or item.alternativeName == vars.name ) ]]></ee:set-payload>
+					</ee:message>
+				</ee:transform>
+		<flow-ref doc:name="finishLoggerInfo" doc:id="c1cd5081-72fe-4cd8-b63f-08afa55525c1" name="finishLoggerInfo"/>
+	</flow>
+	<flow name="getMoonsByPlanetName" doc:id="836150a6-a694-4eb5-8b52-b8ca44b28e3f" >
+		<flow-ref doc:name="startLoggerInfo" doc:id="8f13fe88-4deb-4275-b135-36fc57b8d8be" name="startLoggerInfo"/>
+		<set-variable value="#[attributes.uriParams.planetName as String]" doc:name="planetName" doc:id="031c5355-6533-4d4c-b5ed-25e73600f109" variableName="planetName"/>
+		<validation:is-true doc:name="Is true" doc:id="27feae35-9cd2-458b-839f-5d149bbddc4a" config-ref="Validation_Config" expression="#[['eris', 'ceres', 'makemake', 'haumea', 'mercury', 'venus', 'earth', 'mars', 'jupiter', 'saturn', 'uranus', 'neptune', 'pluto',] contains vars.PlanetName]">
+			<error-mapping sourceType="VALIDATION:INVALID_BOOLEAN" targetType="APP:INCORRECT_PLANET_FOR_MOON" />
+		</validation:is-true>
+		<set-variable value="#[true]" doc:name="isMoon" doc:id="c6d0221b-f1aa-41b9-a093-fb2c4e600064" variableName="isMoon"/>
+		<flow-ref doc:name="gerToSourceAndPrimaryTransformation" doc:id="16956b50-7178-4203-9f78-46666deb708d" name="gerToSourceAndPrimaryTransformation"/>
+		<ee:transform doc:name="filterByPlanetName" doc:id="05088931-30b5-4491-a860-8f3137e4012b" >
+			<ee:message >
+				<ee:set-payload ><![CDATA[%dw 2.0
+output application/json
+---
+payload filter((item, index) -> item.aroundPlanet == vars.planetName)]]></ee:set-payload>
+			</ee:message>
+		</ee:transform>
+		<validation:is-not-empty-collection doc:name="Is not empty collection" doc:id="c6a8a54a-6d26-4074-9e85-580ef6c023cc" config-ref="Validation_Config">
+			<error-mapping sourceType="VALIDATION:EMPTY_COLLECTION" targetType="APP:EMPTY_MOONS_RESPONSE" />
+		</validation:is-not-empty-collection>
+		<flow-ref doc:name="finishLoggerInfo" doc:id="c299f878-8980-49f5-88a0-b6a3ed6f0a1f" name="finishLoggerInfo"/>
+		<error-handler ref="getPlanetsErrorHandler" />
+	</flow>
+</mule>

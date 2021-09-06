@@ -1,0 +1,7 @@
+http:
+  port: "8081"
+  
+request:
+  host: "api.le-systeme-solaire.net"
+  basepath: "/rest/bodies"
+  protocol: "HTTPS"

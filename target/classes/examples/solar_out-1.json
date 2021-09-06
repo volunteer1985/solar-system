@@ -1,0 +1,79 @@
+ [
+    {
+      
+      "name": "1 Ceres",
+      "isPlanet": true,
+      "moons": null,
+      "semimajorAxis": 413690250,
+      "perihelion": 382620000,
+      "aphelion": 445410000,
+      "eccentricity": 0.07582,
+      "inclination": 10.593,
+      "mass": {
+        "massValue": 9.393,
+        "massExponent": 20
+      },
+      "density": 2.161,
+      "gravity": 0.28,
+      "escape": 510,
+      "meanRadius": 476.2,
+      "equaRadius": 487,
+      "polarRadius": 455,
+      "flattening": 0.9619,
+      "dimension": "",
+      "sideralOrbit": 1681.63,
+      "sideralRotation": 9.07,
+      "aroundPlanet": null,
+      "discoveredBy": "Giuseppe Piazzi",
+      "discoveryDate": "01/01/1801",
+      "alternativeName": "A899 OF - 1943 XB",
+      "axialTilt": 3,
+      "avgTemp": 0,
+      "mainAnomaly": 77.3721,
+      "argPeriapsis": 73.59769,
+      "longAscNode": 80.30553,
+      "rel": "https://api.le-systeme-solaire.net/rest/bodies/ceres"
+    },
+    {
+      
+      "name": "136199 Eris",
+      "isPlanet": true,
+      "moons": [
+        {
+          "moon": "Dysnomie",
+          "rel": "https://api.le-systeme-solaire.net/rest/bodies/dysnomie"
+        }
+      ],
+      "semimajorAxis": 10180122852,
+      "perihelion": 5765732799,
+      "aphelion": 14594512904,
+      "eccentricity": 0.44068,
+      "inclination": 44.0445,
+      "mass": {
+        "massValue": 1.66,
+        "massExponent": 22
+      },
+      
+      "density": 2.52,
+      "gravity": 0.82,
+      "escape": 1380,
+      "meanRadius": 1163,
+      "equaRadius": 0,
+      "polarRadius": 0,
+      "flattening": 0,
+      "dimension": "",
+      "sideralOrbit": 203830,
+      "sideralRotation": 25.92,
+      "aroundPlanet": null,
+      "discoveredBy": "Michael E. Brown, Chadwick Trujillo, David L. Rabinowitz",
+      "discoveryDate": "05/01/2005",
+      "alternativeName": "2003 UB313",
+      "axialTilt": 0,
+      "avgTemp": 0,
+      "mainAnomaly": 205.989,
+      "argPeriapsis": 151.639,
+      "longAscNode": 35.951,
+      "rel": "https://api.le-systeme-solaire.net/rest/bodies/eris"
+    }    
+  ]
+    

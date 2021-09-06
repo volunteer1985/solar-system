@@ -1,0 +1,143 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<mule xmlns:ee="http://www.mulesoft.org/schema/mule/ee/core" xmlns="http://www.mulesoft.org/schema/mule/core"
+	xmlns:doc="http://www.mulesoft.org/schema/mule/documentation"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.mulesoft.org/schema/mule/core http://www.mulesoft.org/schema/mule/core/current/mule.xsd
+http://www.mulesoft.org/schema/mule/ee/core http://www.mulesoft.org/schema/mule/ee/core/current/mule-ee.xsd">
+	<error-handler name="apiMainErrorHandler" doc:id="61bc726f-ef92-4605-bf12-96248d5869a8" >
+		<on-error-propagate enableNotifications="true" logException="true" doc:name="On Error Propagate" doc:id="ea057825-c436-4bc6-b261-7d2f46d67a34" type="APIKIT:BAD_REQUEST">
+			<ee:transform doc:name="errorMessage" doc:id="9060e9f3-a22b-4511-9723-a8b725805201" xsi:schemaLocation="http://www.mulesoft.org/schema/mule/ee/core http://www.mulesoft.org/schema/mule/ee/core/current/mule-ee.xsd" >
+				<ee:message >
+					<ee:set-payload ><![CDATA[%dw 2.0
+output application/json
+---
+{message: "Bad request"}]]></ee:set-payload>
+				</ee:message>
+				<ee:variables >
+					<ee:set-variable variableName="httpStatus" ><![CDATA[400]]></ee:set-variable>
+				</ee:variables>
+			</ee:transform>
+		</on-error-propagate>
+		<on-error-propagate enableNotifications="true" logException="true" doc:name="On Error Propagate" doc:id="6a38ec53-8ba0-4535-ad06-0cd39b864bf1" type="APIKIT:NOT_FOUND">
+			<ee:transform doc:name="errorMessage" doc:id="edb268ae-830f-4d01-a54e-bb1db26e1206" xsi:schemaLocation="http://www.mulesoft.org/schema/mule/ee/core http://www.mulesoft.org/schema/mule/ee/core/current/mule-ee.xsd" >
+				<ee:message >
+					<ee:set-payload ><![CDATA[%dw 2.0
+output application/json
+---
+{message: "Resource not found"}]]></ee:set-payload>
+				</ee:message>
+				<ee:variables >
+					<ee:set-variable variableName="httpStatus" ><![CDATA[404]]></ee:set-variable>
+				</ee:variables>
+			</ee:transform>
+		</on-error-propagate>
+		<on-error-propagate enableNotifications="true" logException="true" doc:name="On Error Propagate" doc:id="300b7433-6f62-42ef-ade3-cdfaa084d815" type="APIKIT:METHOD_NOT_ALLOWED">
+			<ee:transform doc:name="errorMessage" doc:id="585d409a-ee4d-4ef2-8166-3665d22f32c7" xsi:schemaLocation="http://www.mulesoft.org/schema/mule/ee/core http://www.mulesoft.org/schema/mule/ee/core/current/mule-ee.xsd" >
+				<ee:message >
+					<ee:set-payload ><![CDATA[%dw 2.0
+output application/json
+---
+{message: "Method not allowed"}]]></ee:set-payload>
+				</ee:message>
+				<ee:variables >
+					<ee:set-variable variableName="httpStatus" ><![CDATA[405]]></ee:set-variable>
+				</ee:variables>
+			</ee:transform>
+		</on-error-propagate>
+		<on-error-propagate enableNotifications="true" logException="true" doc:name="On Error Propagate" doc:id="db2a0a79-4677-49b0-bda6-b787f5073883" type="APIKIT:NOT_ACCEPTABLE">
+			<ee:transform doc:name="errorMessage" doc:id="4b900b39-738b-4960-8283-25ba48d9d261" xsi:schemaLocation="http://www.mulesoft.org/schema/mule/ee/core http://www.mulesoft.org/schema/mule/ee/core/current/mule-ee.xsd" >
+				<ee:message >
+					<ee:set-payload ><![CDATA[%dw 2.0
+output application/json
+---
+{message: "Not acceptable"}]]></ee:set-payload>
+				</ee:message>
+				<ee:variables >
+					<ee:set-variable variableName="httpStatus" ><![CDATA[406]]></ee:set-variable>
+				</ee:variables>
+			</ee:transform>
+		</on-error-propagate>
+		<on-error-propagate enableNotifications="true" logException="true" doc:name="On Error Propagate" doc:id="f8a4a3cd-7737-4a30-a8cb-c196b1484877" type="APIKIT:UNSUPPORTED_MEDIA_TYPE">
+			<ee:transform doc:name="errorMessage" doc:id="61ca6954-28f9-498f-ac0f-6f21c324bc2d" xsi:schemaLocation="http://www.mulesoft.org/schema/mule/ee/core http://www.mulesoft.org/schema/mule/ee/core/current/mule-ee.xsd" >
+				<ee:message >
+					<ee:set-payload ><![CDATA[%dw 2.0
+output application/json
+---
+{message: "Unsupported media type"}]]></ee:set-payload>
+				</ee:message>
+				<ee:variables >
+					<ee:set-variable variableName="httpStatus" ><![CDATA[415]]></ee:set-variable>
+				</ee:variables>
+			</ee:transform>
+		</on-error-propagate>
+		<on-error-propagate enableNotifications="true" logException="true" doc:name="On Error Propagate" doc:id="7e3721e4-7c77-43f7-bc4f-c77e1afd49bf" type="APIKIT:NOT_IMPLEMENTED">
+			<ee:transform doc:name="errorMessage" doc:id="5c054927-4d01-4498-a81f-3cae93ef6642" xsi:schemaLocation="http://www.mulesoft.org/schema/mule/ee/core http://www.mulesoft.org/schema/mule/ee/core/current/mule-ee.xsd" >
+				<ee:message >
+					<ee:set-payload ><![CDATA[%dw 2.0
+output application/json
+---
+{message: "Not Implemented"}]]></ee:set-payload>
+				</ee:message>
+				<ee:variables >
+					<ee:set-variable variableName="httpStatus" ><![CDATA[501]]></ee:set-variable>
+				</ee:variables>
+			</ee:transform>
+		</on-error-propagate>
+	</error-handler>
+	<error-handler name="apiConsoleErrorHandler" doc:id="a6f0e62c-42b6-462e-9960-4406774c440c" >
+		<on-error-propagate enableNotifications="true" logException="true" doc:name="On Error Propagate" doc:id="88bb0f57-1629-4cfb-8170-91efb6ef406e" type="APIKIT:NOT_FOUND">
+			<ee:transform doc:name="errorMessage" doc:id="3163c6b9-5866-49d0-aef6-0f958631dfb1" xsi:schemaLocation="http://www.mulesoft.org/schema/mule/ee/core http://www.mulesoft.org/schema/mule/ee/core/current/mule-ee.xsd" >
+				<ee:message >
+					<ee:set-payload ><![CDATA[%dw 2.0
+output application/json
+---
+{message: "Resource not found"}]]></ee:set-payload>
+				</ee:message>
+				<ee:variables >
+					<ee:set-variable variableName="httpStatus" ><![CDATA[404]]></ee:set-variable>
+				</ee:variables>
+			</ee:transform>
+		</on-error-propagate>
+	</error-handler>
+	<error-handler name="getPlanetsErrorHandler" doc:id="c3b32223-a292-4ca6-be43-c1ed5874c101" >
+		<on-error-propagate enableNotifications="true" logException="true" doc:name="On Error Propagate" doc:id="bff4605b-3860-4a82-a635-11d330dbfb1d" type="APP:INCORRECT_PLANET">
+			<ee:transform doc:name="errorMessage" doc:id="b17032f0-3c00-4849-bbe2-a87e55a44c01" >
+				<ee:message >
+					<ee:set-payload ><![CDATA[%dw 2.0
+output application/json
+---
+{
+	message: "Incorrect planet name: " ++ vars.name as String ++ " Use capitalized name of planet. For dwarf-planets use official name with digital index."
+}]]></ee:set-payload>
+				</ee:message>
+			</ee:transform>
+			<set-variable value="400" doc:name="httpStatus" doc:id="a8dbf683-08bf-4385-aabc-877fb603e3d7" variableName="httpStatus"/>
+		</on-error-propagate>
+		<on-error-propagate enableNotifications="true" logException="true" doc:name="On Error Propagate" doc:id="678796ca-69b5-49af-a8e0-4db45b72399c" type="APP:INCORRECT_PLANET_FOR_MOON">
+			<ee:transform doc:name="Copy_of_errorMessage" doc:id="df55043c-914b-4fab-a403-f52c4cb90984" >
+				<ee:message >
+					<ee:set-payload ><![CDATA[%dw 2.0
+output application/json
+---
+{
+	message: "Incorrect planet name: " ++ vars.PlanetName as String ++ " Use lowercase name of planet. For dwarf-planets use name without digital index."
+}]]></ee:set-payload>
+				</ee:message>
+			</ee:transform>
+			<set-variable value="400" doc:name="Copy_of_httpStatus" doc:id="0852d5cb-8e87-428e-b244-a67d2ad6e7d0" variableName="httpStatus" />
+		</on-error-propagate>
+		<on-error-continue enableNotifications="true" logException="true" doc:name="On Error Continue" doc:id="8d9df43d-ca92-4ebb-a129-18d8b160aadc" type="APP:EMPTY_MOONS_RESPONSE">
+			<ee:transform doc:name="Transform Message" doc:id="e2d7deda-fecf-452d-af9f-4649d8a3fb6c" >
+				<ee:message >
+					<ee:set-payload ><![CDATA[%dw 2.0
+import * from dw::core::Strings
+output application/json
+---
+{
+	message: "There are no moons around planet: " ++ capitalize(vars.planetName as String) 
+}]]></ee:set-payload>
+				</ee:message>
+			</ee:transform>
+		</on-error-continue>
+	</error-handler>
+</mule>

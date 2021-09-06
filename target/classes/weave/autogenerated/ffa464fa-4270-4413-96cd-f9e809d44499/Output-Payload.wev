@@ -1,0 +1,13 @@
+%dw 2.0
+
+type auto_ffa464fa_4270_4413_96cd_f9e809d44499_Output_Payload = Array<{  meanRadius: Number,   mass: {    massExponent: Number,     massValue: Number,     _?: Any  },   argPeriapsis: Number,   discoveredBy: String,   isPlanet: Boolean,   perihelion: Number,   mainAnomaly: Number,   aphelion: Number,   sideralRotation: Number,   axialTilt: Number,   aroundPlanet: String,   alternativeName: String,   escape: Number,   dimension: Number,   inclination: Number,   polarRadius: Number,   sideralOrbit: Number,   density: Number,   flattening: Number,   moons: Array<{    moon: String,     _?: Any  }>, 
+  eccentricity: Number, 
+  longAscNode: Number, 
+  equaRadius: Number, 
+  avgTemp: Number, 
+  discoveryDate: String, 
+  gravity: Number, 
+  name: String, 
+  _?: Any
+}>
+

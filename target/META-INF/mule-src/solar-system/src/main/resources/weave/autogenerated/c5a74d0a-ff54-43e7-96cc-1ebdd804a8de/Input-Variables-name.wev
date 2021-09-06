@@ -1,0 +1,4 @@
+%dw 2.0
+
+type auto_c5a74d0a_ff54_43e7_96cc_1ebdd804a8de_Input_Variables_name = String | Null
+
