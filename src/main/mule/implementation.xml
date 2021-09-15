@@ -180,25 +180,25 @@ payload filter((item, index) -> item.aroundPlanet == vars.planetName)]]></ee:set
 		<flow-ref doc:name="finishLoggerInfo" doc:id="c299f878-8980-49f5-88a0-b6a3ed6f0a1f" name="finishLoggerInfo"/>
 		<error-handler ref="getPlanetsErrorHandler" />
 	</flow>
-	<flow name="implementationFlow" doc:id="ec28731e-560e-486a-90d3-db8902c24981" >
-		<http:listener doc:name="Listener" doc:id="bd4fb189-e0cc-42be-9e99-3faa6c263696" config-ref="HTTP_Listener_config" path="/discovery"/>
-		<set-variable value='#[attributes.queryParams.year default ""]' doc:name="discoveryYear" doc:id="71e39133-fca3-41f3-9660-1ce61784eb13" variableName="discoveryYear"/>
-		<validation:is-not-blank-string doc:name="Is not blank string" doc:id="eb6d8176-b4af-44d5-8dab-f96fde3fadfb" value="#[vars.discoveryYear]"/>
-		<validation:matches-regex doc:name="Matches regex" doc:id="6cab60b9-0634-4f7d-a589-3da7bac02672" value="#[vars.discoveryYear]" regex="^\d{4}$" config-ref="Validation_Config"/>
-		<http:request method="GET" doc:name="Request" doc:id="89f53a7e-8276-4a97-a575-fd63c1260f63" config-ref="HTTP_Request_configuration" path="/"/>
-		<validation:is-not-empty-collection doc:name="Is not empty collection" doc:id="72477aeb-3e21-49ad-9b00-f0d802fc40c9" />
-		<ee:transform doc:name="filterByDiscoveryYear" doc:id="7729d051-a5fc-43af-afd0-04b91740c3ae" >
-			<ee:message >
-				<ee:set-payload ><![CDATA[output application/json
+	<flow name="getBodiesByYear" doc:id="ec28731e-560e-486a-90d3-db8902c24981">
+		<logger level="INFO" doc:name="startLogger" doc:id="5cae9bed-9142-4aed-bfc6-85be1bd1bc65" />
+		<set-variable value='#[attributes.queryParams.year default ""]' doc:name="discoveryYear" doc:id="71e39133-fca3-41f3-9660-1ce61784eb13" variableName="discoveryYear" />
+		<validation:is-not-blank-string doc:name="Is not blank string" doc:id="eb6d8176-b4af-44d5-8dab-f96fde3fadfb" value="#[vars.discoveryYear]" />
+		<validation:matches-regex doc:name="Matches regex" doc:id="6cab60b9-0634-4f7d-a589-3da7bac02672" value="#[vars.discoveryYear]" regex="^\d{4}$" config-ref="Validation_Config" />
+		<http:request method="GET" doc:name="Request" doc:id="89f53a7e-8276-4a97-a575-fd63c1260f63" config-ref="HTTP_Request_configuration" path="/" />
+		<validation:is-not-empty-collection doc:name="Is not empty collection" doc:id="72477aeb-3e21-49ad-9b00-f0d802fc40c9" values="#[payload.bodies]"/>
+		<ee:transform doc:name="filterByDiscoveryYear" doc:id="7729d051-a5fc-43af-afd0-04b91740c3ae">
+			<ee:message>
+				<ee:set-payload><![CDATA[output application/json
 ---
 
 payload.bodies filter ($.discoveryDate contains vars.discoveryYear)
 	 ]]></ee:set-payload>
 			</ee:message>
 		</ee:transform>
-		<ee:transform doc:name="Transform Message" doc:id="df89b378-af9e-42a2-96fb-fa0883a1a5cf" >
-			<ee:message >
-				<ee:set-payload ><![CDATA[%dw 2.0
+		<ee:transform doc:name="transformToBodiesDataType" doc:id="df89b378-af9e-42a2-96fb-fa0883a1a5cf">
+			<ee:message>
+				<ee:set-payload><![CDATA[%dw 2.0
 output application/json
 ---
 payload map {
@@ -208,7 +208,7 @@ payload map {
 		if($.moons != null)
 		sizeOf($.moons)
 		else
-		null,
+		0,
 	perihelion: $.perihelion,
 	aphelion: $.aphelion,
 	eccentricity: $.eccentricity,
@@ -227,5 +227,6 @@ payload map {
 }]]></ee:set-payload>
 			</ee:message>
 		</ee:transform>
+		<flow-ref doc:name="finishLoggerInfo" doc:id="e7ba02c0-52e3-4d86-aad4-14e230820a27" name="finishLoggerInfo" />
 	</flow>
 </mule>

@@ -1,0 +1,4 @@
+%dw 2.0
+
+type auto_ec28731e_560e_486a_90d3_db8902c24981_Output_Payload = Array<{  inclination: Number,   density: Number,   flattening: Number,   moons: Number,   mass: Number,   discoveredBy: String,   isPlanet: Boolean,   perihelion: Number,   aphelion: Number,   avgTemp: Number,   discoveryDate: String,   axialTilt: Number,   gravity: Number,   name: String,   aroundPlanet: String,   alternativeName: String,   dimension: Number,   _?: Any}>
+

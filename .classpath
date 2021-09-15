@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <classpath>
+	<classpathentry kind="con" path="org.mule.tooling.API_SPEC_LIB/d4dd94e9-8def-45af-881d-78011cf512fc/solarsystemapi/2.0.1"/>
 	<classpathentry kind="con" path="MULE_LIB/org.mule.connectors/mule-sockets-connector/1.2.2"/>
 	<classpathentry kind="con" path="MULE_LIB/org.mule.modules/mule-apikit-module/1.5.5"/>
-	<classpathentry kind="con" path="org.mule.tooling.API_SPEC_LIB/d4dd94e9-8def-45af-881d-78011cf512fc/solarsystemapi/1.0.7"/>
 	<classpathentry kind="con" path="org.mule.tooling.MULE_PROJECT_LIB"/>
 	<classpathentry kind="con" path="MULE_LIB/com.mulesoft.munit/munit-tools/2.3.5"/>
 	<classpathentry kind="con" path="MULE_LIB/com.mulesoft.munit/munit-runner/2.3.5"/>

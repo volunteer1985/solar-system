@@ -11,7 +11,7 @@
             </http:error-response>
         </http:listener>
         <apikit:router config-ref="solarsystemapi-config" />
-		<error-handler ref="apiMainErrorHandler" />
+        <error-handler ref="apiMainErrorHandler" />
     </flow>
     <flow name="solarsystemapi-console">
         <http:listener config-ref="HTTP_Listener_config" path="/console/*">
@@ -24,7 +24,7 @@
             </http:error-response>
         </http:listener>
         <apikit:console config-ref="solarsystemapi-config" />
-		<error-handler ref="apiConsoleErrorHandler" />
+        <error-handler ref="apiConsoleErrorHandler" />
     </flow>
     <flow name="get:\moons:solarsystemapi-config">
         <flow-ref doc:name="getMoonByName" doc:id="5d9f39fd-bdd3-4371-adbf-ba8f306c7c47" name="getMoonByName" />
@@ -34,5 +34,8 @@
     </flow>
     <flow name="get:\moons\(planetName):solarsystemapi-config">
         <flow-ref doc:name="getMoonsByPlanetName" doc:id="46128a5c-b4d9-4f02-ab35-3d45601d275b" name="getMoonsByPlanetName" />
+    </flow>
+    <flow name="get:\discovery:solarsystemapi-config">
+        <flow-ref doc:name="getBodiesByYear" doc:id="1bfd619d-42ac-4c27-a8f6-b3c7273250b3" name="getBodiesByYear" />
     </flow>
 </mule>
