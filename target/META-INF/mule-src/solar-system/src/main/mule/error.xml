@@ -139,5 +139,17 @@ output application/json
 				</ee:message>
 			</ee:transform>
 		</on-error-continue>
+		<on-error-propagate enableNotifications="true" logException="true" doc:name="On Error Propagate" doc:id="4400b71c-932e-41ce-b781-b86434bac06d" >
+			<ee:transform doc:name="Transform Message" doc:id="2c794c09-be0f-489f-bbe5-9342d836a103" >
+				<ee:message >
+					<ee:set-payload ><![CDATA[%dw 2.0
+output application/json
+---
+{
+	message: "Something definitely went wrong. Please contact admin or app-owner."
+}]]></ee:set-payload>
+				</ee:message>
+			</ee:transform>
+		</on-error-propagate>
 	</error-handler>
 </mule>

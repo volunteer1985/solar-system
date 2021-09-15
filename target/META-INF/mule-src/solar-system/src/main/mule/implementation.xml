@@ -138,7 +138,6 @@ payload filter((item, index) -> item.name == vars.name)]]></ee:set-payload>
 	<flow name="getMoonByName" doc:id="43d12dfd-ea3f-4a2c-9a00-24f6b62d8326" >
 		<flow-ref doc:name="startLoggerInfo" doc:id="78ac09f2-493d-4f6e-90e2-5f84586ac1ba" name="startLoggerInfo"/>
 		<set-variable value="#[attributes.queryParams.name]" doc:name="name" doc:id="55bc4d09-9134-4d04-b1ae-b8e2858f8cb6" variableName="name"/>
-		<validation:is-not-null doc:name="Is not null" doc:id="b05c7e32-790e-4e3e-9a50-072e14c26596" config-ref="Validation_Config" value="#[vars.name]"/>
 		<set-variable value="#[true]" doc:name="isMoon" doc:id="ca72c7d5-de1e-440e-b339-d4b71f5633e4" variableName="isMoon"/>
 		<flow-ref doc:name="gerToSourceAndPrimaryTransformation" doc:id="0ab02e3e-eb38-448b-8a22-33194c6eef04" name="gerToSourceAndPrimaryTransformation"/>
 		<ee:transform doc:name="filterMoons" doc:id="c905427c-2230-4776-b313-a7f255227e08" >
@@ -180,5 +179,54 @@ payload filter((item, index) -> item.aroundPlanet == vars.planetName)]]></ee:set
 		</validation:is-not-empty-collection>
 		<flow-ref doc:name="finishLoggerInfo" doc:id="c299f878-8980-49f5-88a0-b6a3ed6f0a1f" name="finishLoggerInfo"/>
 		<error-handler ref="getPlanetsErrorHandler" />
+	</flow>
+	<flow name="implementationFlow" doc:id="ec28731e-560e-486a-90d3-db8902c24981" >
+		<http:listener doc:name="Listener" doc:id="bd4fb189-e0cc-42be-9e99-3faa6c263696" config-ref="HTTP_Listener_config" path="/discovered"/>
+		<set-variable value='#[attributes.queryParams.year default ""]' doc:name="discoveryYear" doc:id="71e39133-fca3-41f3-9660-1ce61784eb13" variableName="discoveryYear"/>
+		<validation:is-not-blank-string doc:name="Is not blank string" doc:id="eb6d8176-b4af-44d5-8dab-f96fde3fadfb" value="#[vars.discoveryYear]"/>
+		<validation:matches-regex doc:name="Matches regex" doc:id="6cab60b9-0634-4f7d-a589-3da7bac02672" value="#[vars.discoveryYear]" regex="^\d{4}$" config-ref="Validation_Config"/>
+		<http:request method="GET" doc:name="Request" doc:id="89f53a7e-8276-4a97-a575-fd63c1260f63" config-ref="HTTP_Request_configuration" path="/"/>
+		<validation:is-not-empty-collection doc:name="Is not empty collection" doc:id="72477aeb-3e21-49ad-9b00-f0d802fc40c9" />
+		<ee:transform doc:name="filterByDiscoveryYear" doc:id="7729d051-a5fc-43af-afd0-04b91740c3ae" >
+			<ee:message >
+				<ee:set-payload ><![CDATA[output application/json
+---
+
+payload.bodies filter ($.discoveryDate contains vars.discoveryYear)
+	 ]]></ee:set-payload>
+			</ee:message>
+		</ee:transform>
+		<ee:transform doc:name="Transform Message" doc:id="df89b378-af9e-42a2-96fb-fa0883a1a5cf" >
+			<ee:message >
+				<ee:set-payload ><![CDATA[%dw 2.0
+output application/json
+---
+payload map {
+	name: $.englishName,
+	isPlanet: $.isPlanet,
+	moons:
+		if($.moons != null)
+		sizeOf($.moons)
+		else
+		null,
+	semimajorAxis: $.semimajorAxis,
+	perihelion: $.perihelion,
+	aphelion: $.aphelion,
+	eccentricity: $.eccentricity,
+	inclination: $.inclination,
+	mass: $.mass.massValue,
+	density: $.density,
+	gravity: $.gravity,
+	flattening: $.flattening,
+	dimension: $.dimension,
+	aroundPlanet: $.aroundPlanet.planet,
+	discoveredBy: $.discoveredBy,
+	discoveryDate: $.discoveryDate,
+	alternativeName: $.alternativeName,
+	axialTilt: $.axialTilt,
+	avgTemp: $.avgTemp
+}]]></ee:set-payload>
+			</ee:message>
+		</ee:transform>
 	</flow>
 </mule>
